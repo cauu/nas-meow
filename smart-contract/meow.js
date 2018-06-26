@@ -1,5 +1,5 @@
 class Pet {
-  constructor(id, name, avatar, gender, birthday, weight, desc, isSterilization, owner, createAt) {
+  constructor(id, name, avatar, gender, birthday, weight, desc, isSterilization, owner) {
     this.id = id;
     this.name = name;
     this.avatar = avatar;
@@ -9,7 +9,6 @@ class Pet {
     this.desc = desc;
     this.isSterilization = isSecureContext;
     this.owner = owner;
-    this.createAt = createAt;
 
     this.likes = 0;
   }
@@ -33,8 +32,11 @@ class PetDB {
     LocalContractStorage.defineProperty(this, 'petCounter', 0);
   }
 
+  init() {
+  }
+
   createPet(name, avatar, gender, birthday, weight, desc, owner, isSterilization) {
-    const pet = new Pet(this.petCounter, name, avatar, gender, birthday, weight, desc, owner, isSterilization, Blockchain.transaction.from, new Date().getTime());
+    const pet = new Pet(this.petCounter, name, avatar, gender, birthday, weight, desc, isSterilization, owner);
 
     this.pets.put(this.petCounter, pet);
 
@@ -62,6 +64,10 @@ class PetDB {
       this.pets.put(id, pet);
       return pet;
     }
+  }
+
+  getPetById(id) {
+    return this.pets.get(id);
   }
 }
 

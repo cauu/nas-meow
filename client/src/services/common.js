@@ -9,8 +9,14 @@ const env = process.env.NODE_ENV;
  * @desc testnet or mainnet
  */
 const Account = Nebulas.Account;
-const net = env === 'development' && 'https://testnet.nebulas.io' || 'https://mainnet.nebulas.io';
-const CONTRACT_ADDRESS = 'n1o6mozqvmFkgDS4az3ikhjdyXdiWHcrc9t';
+const net = env === 'development'
+  && 'https://testnet.nebulas.io'
+  || 'https://mainnet.nebulas.io'
+;
+const CONTRACT_ADDRESS = env === 'development' 
+  && 'n1o6mozqvmFkgDS4az3ikhjdyXdiWHcrc9t'
+  || 'n1uPamEdnrCZPmRpcBoXUJhiS1FmLE7rePw'
+;
 const VALUE = '0';
 const NONCE = '0';
 const GAS_PRICE = '1000000';
@@ -23,6 +29,10 @@ const nebPay = new NebPay();
 
 neb.setRequest(new Nebulas.HttpRequest(net));
 
+const _serializeArgs = (args) => {
+  return '[' + args.map((args) => `"${args}"`).join(',') + ']'; 
+}
+
 const nebGet = (callFunc, callArgs) => neb.api.call(
   Account.NewAccount().getAddressString(),
   CONTRACT_ADDRESS,
@@ -32,7 +42,7 @@ const nebGet = (callFunc, callArgs) => neb.api.call(
   GAS_LIMIT,
   {
     "function": callFunc,
-    "args": callArgs
+    "args": _serializeArgs(callArgs)
   }
 ).then((res) => {
   let result = res.result;
@@ -69,7 +79,7 @@ const _queryByHash = async (hash) => {
   const receipt = await neb.api.getTransactionReceipt({hash});
 
   return new Promise((resolve, reject) => {
-    if(receipt.status === 1) {
+    if(receipt.status === 1 || receipt.status === 2) {
       resolve(receipt);
     }
     if(receipt.status === 0) {
@@ -88,11 +98,10 @@ const _queryByHash = async (hash) => {
  * 成功时，函数返回{status: 'success', serialNumber}
  * 失败时，函数返回{status: 'fail', serialNumber}
  */
-const nebPost = (callFunc, callArgs, value) => {
+const nebPost = (callFunc, callArgs, value, onStartHook) => {
   return new Promise((resolve, reject) => {
-    const serialNumber = nebPay.call(CONTRACT_ADDRESS, value, callFunc, callArgs, {
+    const serialNumber = nebPay.call(CONTRACT_ADDRESS, value, callFunc, _serializeArgs(callArgs), {
       listener: (res) => {
-        const ispc = isPC();
         if (!isPC()) {
           return;
         }
@@ -101,13 +110,19 @@ const nebPost = (callFunc, callArgs, value) => {
           const hash = res.txhash;
 
           let retry = 0;
+          let isPendding = false;
 
           let timer = setInterval(async () => {
             try {
               if(retry > MAX_RETRY) throw new Error('Timeout Error');
               const receipt = await _queryByHash(hash);
               retry++;
-              if(receipt) {
+              const { status } = receipt;
+              if(status === 2 && !isPendding) {
+                isPendding = true;
+                onStartHook && onStartHook(receipt);
+              }
+              if(receipt && status === 1) {
                 clearInterval(timer);
                 timer = null;
                 resolve({ status: 'success', serialNumber, receipt });
@@ -128,6 +143,7 @@ const nebPost = (callFunc, callArgs, value) => {
        * 如果成功提交，则调用queryByHash函数获取收据
        */
       let retry = 0;
+      let isPendding = false;
 
       let queryTimer = setInterval(async () => {
         try {
@@ -144,7 +160,12 @@ const nebPost = (callFunc, callArgs, value) => {
                 if(retry > MAX_RETRY) throw new Error('Timeout Error');
                 const receipt = await _queryByHash(hash);
                 retry++;
-                if(receipt) {
+                const { status } = receipt;
+                if(status === 2 && !isPendding) {
+                  isPendding = true;
+                  onStartHook && onStartHook(receipt);
+                }
+                if(receipt && status === 1) {
                   clearInterval(timer);
                   timer = null;
                   resolve({ status: 'success', serialNumber, receipt });
