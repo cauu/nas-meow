@@ -61,7 +61,7 @@ typings/
 .next
 
 dll
-.babelrc
 dist
 .vscode
 .DS_Store
+package-lock.json
