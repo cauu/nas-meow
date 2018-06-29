@@ -14,8 +14,8 @@ const net = env === 'development'
   || 'https://mainnet.nebulas.io'
 ;
 const CONTRACT_ADDRESS = env === 'development' 
-  && 'n1o6mozqvmFkgDS4az3ikhjdyXdiWHcrc9t'
-  || 'n1uPamEdnrCZPmRpcBoXUJhiS1FmLE7rePw'
+  && 'n1bTmLNkzexXuB1TvWeUpcgFmPG2HtjAqGo'
+  || 'n1nWFKXYohEiuNSSutNFcFPfSFbsvFLoFri'
 ;
 const VALUE = '0';
 const NONCE = '0';

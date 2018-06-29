@@ -9,9 +9,15 @@ function createPet(
   desc,
   owner,
   isSterilization,
+  photos,
+  owner,
   onStartHook
 ) {
-  return nebPost('createPet', [name, avatar, gender, birthday, weight, desc, owner, isSterilization], 0, onStartHook);
+  return nebPost('createPet',
+    [name, avatar, gender, birthday, weight, desc, owner, isSterilization, photos, owner],
+    0,
+    onStartHook
+  );
 }
 
 function listPets() {
@@ -26,9 +32,14 @@ function likePet(id) {
   return nebGet('likePet', [id]);
 }
 
-export {                                                                                                                                                                                                                                                                                                                                                                  
+function uploadPhotos(id, photos) {
+  return nebPost('uploadPhotos', [id, photos]);
+}
+
+export {                                                                                                                                                                                                                                                                                                                                                                
   createPet,
   listPets,
   getPetById,
   likePet,
+  uploadPhotos
 };

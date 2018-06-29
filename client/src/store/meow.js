@@ -1,11 +1,18 @@
 import { observable, action, reaction, runInAction } from 'mobx';
 
-import { createPet, listPets, getPetById, likePet } from '../services/meow';
+import { createPet, listPets, getPetById, likePet, uploadPhotos } from '../services/meow';
 
 export default class MeowStore {
+  @observable myPets = [];
   @observable petList = [];
   @observable currPet = {};
   @observable isLoading = false;
+
+  @action createPet = async () => {
+    this.isLoading = true;
+
+    const pet = await createPet();
+  }
 
   @action getAllPets = async () => {
     this.isLoading = true;
@@ -21,17 +28,15 @@ export default class MeowStore {
     });
   }
 
-  @action getPetById = async (id) => {
+  @action getMyPets = async () => {
     this.isLoading = true;
 
-    this.currPet = {};
+    const myPets = localStorage.getItem('myPets');
+  }
 
-    const pet = await getPetById(id);
+  @action getPetDetail = async (id) => {
+    this.isLoading = true;
 
-    this.isLoading = false;
-
-    runInAction('update current pet', () => {
-      this.currPet = pet;
-    });
+    const pet = await getPetById('');
   }
 }

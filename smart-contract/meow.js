@@ -1,5 +1,5 @@
 class Pet {
-  constructor(id, name, avatar, gender, birthday, weight, desc, isSterilization, owner) {
+  constructor(id, name, avatar, gender, birthday, weight, desc, isSterilization, photos, owner, creator) {
     this.id = id;
     this.name = name;
     this.avatar = avatar;
@@ -7,10 +7,13 @@ class Pet {
     this.birthday = birthday;
     this.weight = weight;
     this.desc = desc;
-    this.isSterilization = isSecureContext;
+    this.isSterilization = isSterilization;
     this.owner = owner;
+    this.photos = photos;
+    this.creator = creator;
 
     this.likes = 0;
+    this.createAt = new Date().getTime();
   }
 
   toString() {
@@ -33,10 +36,13 @@ class PetDB {
   }
 
   init() {
+    this.petCounter = 0;
   }
 
-  createPet(name, avatar, gender, birthday, weight, desc, owner, isSterilization) {
-    const pet = new Pet(this.petCounter, name, avatar, gender, birthday, weight, desc, isSterilization, owner);
+  createPet(name, avatar, gender, birthday, weight, desc, isSterilization, photos, owner) {
+    const creator = Blockchain.transaction.from;
+
+    const pet = new Pet(this.petCounter, name, avatar, gender, birthday, weight, desc, isSterilization, photos, owner, creator);
 
     this.pets.put(this.petCounter, pet);
 
@@ -68,6 +74,15 @@ class PetDB {
 
   getPetById(id) {
     return this.pets.get(id);
+  }
+
+  uploadPhotos(id, photos) {
+    const pet = this.pets.get(id);
+    if(pet) {
+      pet.photos = pet.photos.split(',').concat(photos.split(',')).join(',');
+      this.pets.put(id, pet);
+      return pet;
+    }
   }
 }
 
