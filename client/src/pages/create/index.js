@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { createForm } from 'rc-form';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 import {
+  Switch,
   Button,
   Toast,
   ActivityIndicator,
@@ -16,6 +18,7 @@ import {
 } from 'antd-mobile';
 
 import { uploadImg } from '../../services/upload';
+import { createPet } from '../../services/meow';
 
 import './style.less';
 
@@ -27,7 +30,8 @@ class Create extends Component {
     super(props);
 
     this.state = {
-      files: []
+      files: [],
+      loading: false
     };
   }
 
@@ -48,6 +52,72 @@ class Create extends Component {
     });
   }
 
+  onSubmit = () => {
+    const { form } = this.props;
+    const { files } = this.state;
+
+    form.validateFields(async (err, value) => {
+      if(err) {
+        const errFields = Object.keys(err);
+        Toast.fail(err[errFields[0]].errors[0].message, 2);
+        return;
+      }
+
+      if(!files[0] || !files[0].url) {
+        Toast.fail('请为猫咪上传头像', 2);
+        return;
+      }
+
+      try {
+        const result = await createPet(
+          value.name,
+          files[0].url,
+          value.gender,
+          moment(value.birthday).format('YYYY-MM-DD'),
+          value.weight,
+          value.desc,
+          value.isSterilization,
+          "",
+          "",
+          () => {
+            this.setState({
+              loading: true
+            });
+          }
+        )
+
+        const catInfo = result.receipt.execute_result;
+
+        let myCats = [];
+        let catId = '';
+
+        if(!!localStorage.getItem('myCats')) {
+          myCats = JSON.parse(localStorage.getItem('myCats'));
+        }
+
+        if(/^{\"id\":(\d+).*$/g.test(catInfo)) {
+          myCats.push((RegExp.$1));
+          catId = RegExp.$1;
+          localStorage.setItem('myCats', JSON.stringify(myCats));
+        }
+
+        this.setState({
+          loading: false
+        }, () => {
+          Toast.success('喵卡创建成功', 5, () => {
+            this.props.history.push(`/detail/${catId}`);
+          }, true);
+        });
+      } catch(e) {
+        this.setState({
+          loading: false
+        }, () => {
+          Toast.fail('喵卡创建失败', 5, () => {}, true);
+        });
+      }
+    });
+  }
+
   render() {
     const { form } = this.props;
 
@@ -55,6 +125,8 @@ class Create extends Component {
 
     return (
       <div className="create-wrapper">
+        <ActivityIndicator animating={this.state.loading} toast text="正在提交" />
+
         <Link to="/">
           <div className="row-header">
             <div className="icon-back"></div>
@@ -95,6 +167,16 @@ class Create extends Component {
                 </Picker>
               )
             }
+            <List.Item
+              extra={
+                getFieldDecorator('isSterilization', {
+                  initialValue: true,
+                  valuePropName: 'checked',
+                })(
+                <Switch
+                  color="#ffc59a"
+                />)}
+            >是否绝育</List.Item>
             {
               getFieldDecorator('birthday', {
                 rules: [{required: true, message: '请选择生日' }]
@@ -123,7 +205,7 @@ class Create extends Component {
                 })(
                   <TextareaItem 
                     placeholder="爱吃啥，有啥特点..."
-                    rows={3}
+                    rows={2}
                   />
                 )
               }

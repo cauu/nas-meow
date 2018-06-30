@@ -7,14 +7,13 @@ function createPet(
   birthday,
   weight,
   desc,
-  owner,
   isSterilization,
   photos,
   owner,
   onStartHook
 ) {
   return nebPost('createPet',
-    [name, avatar, gender, birthday, weight, desc, owner, isSterilization, photos, owner],
+    [name, avatar, gender, birthday, weight, desc, isSterilization, photos, owner],
     0,
     onStartHook
   );
