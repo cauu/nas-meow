@@ -9,14 +9,17 @@ const env = process.env.NODE_ENV;
  * @desc testnet or mainnet
  */
 const Account = Nebulas.Account;
-const net = env === 'development'
-  && 'https://testnet.nebulas.io'
-  || 'https://mainnet.nebulas.io'
-;
-const CONTRACT_ADDRESS = env === 'development' 
-  && 'n1bTmLNkzexXuB1TvWeUpcgFmPG2HtjAqGo'
-  || 'n1nWFKXYohEiuNSSutNFcFPfSFbsvFLoFri'
-;
+// const net = env === 'development'
+//   && 'https://testnet.nebulas.io'
+//   || 'https://mainnet.nebulas.io'
+// ;
+const net = 'https://mainnet.nebulas.io'
+
+// const CONTRACT_ADDRESS = env === 'development' 
+//   && 'n1bTmLNkzexXuB1TvWeUpcgFmPG2HtjAqGo'
+//   || 'n1nWFKXYohEiuNSSutNFcFPfSFbsvFLoFri'
+// ;
+const CONTRACT_ADDRESS = 'n1nWFKXYohEiuNSSutNFcFPfSFbsvFLoFri'
 const VALUE = '0';
 const NONCE = '0';
 const GAS_PRICE = '1000000';
