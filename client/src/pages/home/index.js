@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import MeowCard from '../../components/card';
 import AddCard from '../../components/add-card';
@@ -7,6 +8,7 @@ import './style.less';
 
 const debugData = [
   {
+    id: 0,
     name: '安娜娜',
     gender: 'f',
     birthday: '2017-01-15',
@@ -36,7 +38,13 @@ class Home extends Component {
     return (
       <div className="home-wrapper">
         <div className="row-header">
-          我的喵卡
+          <span className="active">
+            我的猫卡
+          </span>
+          <span> | </span>
+          <Link to="/square">
+            随便逛逛
+          </Link>
         </div>
         <div className="card-wrapper">
           {

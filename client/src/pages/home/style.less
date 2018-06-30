@@ -5,9 +5,21 @@
   padding-top: 0;
   .row-header {
     line-height: 120px;
+    width: 100%;
     margin-bottom: 20px;
     font-size: 32px;
     color: @font-color-dark;
+    text-align: center;
+    a {
+      color: @font-color-dark;
+    }
+    span {
+      color: @font-color-dark;
+      font-weight: 400;
+      &.active {
+        font-weight: bold;
+      }
+    }
   }
   .card-wrapper {
     padding-bottom: 30px;

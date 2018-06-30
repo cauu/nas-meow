@@ -1,0 +1,107 @@
+@import '../../styles/variables.less';
+
+.simple-card-wrapper {
+  position: relative;
+  line-height: 120px;
+  height: 120px;
+  padding: 0 40px;
+  box-shadow: 0 4px 12px 0 @orange-secondary;
+  border: 1px solid @grey-border;
+  border-radius: 14px;
+  background: #fff;
+
+  .left-wrapper {
+    display: inline-block;
+    width: 120px;
+    vertical-align: middle;
+    .avatar {
+      display: inline-block;
+      vertical-align: middle;
+      height: 80px;
+      width: 80px;
+      border-radius: 80px;
+      border: 1px solid @grey-border;
+    }
+  }
+
+  .middle-wrapper {
+    display: inline-block;
+    width: 450px;
+    vertical-align: middle;
+    .row-name {
+    }
+    .row {
+      line-height: 40px;
+      .icon {
+        display: inline-block;
+        vertical-align: middle;
+        height: 32px;
+        width: 32px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+        margin-right: 13px;
+      }
+      .text {
+        display: inline-block;
+        font-size: 22px;
+        color: @font-color-light;
+        &.id {
+          margin-top: 10px;
+          float: right;
+          overflow: hidden;
+          font-size: 20px;
+          padding: 0 10px;
+          border-radius: 13px;
+          background: @orange-primary;
+          color: white;
+          line-height: 26px;
+          white-space: nowrap;
+        }
+      }
+    }
+    .row-age {
+      .gender {
+        position: relative;
+        display: inline-block;
+        line-height: 26px;
+        padding-left: 42px;
+        padding-right: 14px;
+        border-radius: 13px;
+        margin-right: 10px;
+        font-size: 20px;
+        color: #fff;
+        &.male {
+          background: #86b0ed;
+          &:after {
+            position: absolute;
+            content: '';
+            left: 14px;
+            top: 4px;
+            height: 18px;
+            width: 14px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-image: url('../card//images/icon-male.png');
+          }
+        }
+        &.female {
+          background: #ff889a;
+          &:after {
+            position: absolute;
+            content: '';
+            left: 14px;
+            top: 4px;
+            height: 18px;
+            width: 14px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-image: url('../card//images/icon-female.png');
+          }
+        }
+      }
+    }
+  }
+}

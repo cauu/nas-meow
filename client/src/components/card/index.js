@@ -20,7 +20,7 @@ export default class Card extends PureComponent {
     } = this.props;
 
     return (
-      <div onClick={onClick} className="meow-card-wrapper">
+      <div onClick={() => onClick && onClick({id})} className="meow-card-wrapper">
         <div className="left-wrapper">
           <div className="row-name">{name}</div>
           <div className="row row-age">
