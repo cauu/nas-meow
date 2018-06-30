@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { observer, inject } from 'mobx-react';
 
 import MeowCard from '../../components/card';
 import AddCard from '../../components/add-card';
@@ -19,9 +20,14 @@ const debugData = [
   }
 ];
 
+
+@inject('meowStore')
+@observer
 class Home extends Component {
   constructor(props) {
     super(props);
+
+    props.meowStore.getMyPets();
   }
 
   onCardClick = ({id}) => {
@@ -31,8 +37,8 @@ class Home extends Component {
   }
 
   render() {
-    const { history } = this.props;
-    const cardsInfo = debugData;
+    const { history, meowStore } = this.props;
+    const cardsInfo = meowStore.myPets;
     const alreadyHasCard = cardsInfo &&  cardsInfo.length > 0;
 
     return (

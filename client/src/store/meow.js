@@ -31,7 +31,18 @@ export default class MeowStore {
   @action getMyPets = async () => {
     this.isLoading = true;
 
-    const myPets = localStorage.getItem('myPets');
+    let myPetIds = [];
+
+    if(localStorage.getItem('myCats')){
+      myPetIds = JSON.parse(localStorage.getItem('myCats'));
+    }
+
+    const myPets = await Promise.all(myPetIds.map((id) => getPetById(id)));
+
+    runInAction('update mypets', () => {
+      this.myPets = myPets;
+      this.loading = false;
+    });
   }
 
   @action getPetDetail = async (id) => {
