@@ -1,0 +1,118 @@
+@import '../../styles/variables.less';
+
+.meow-card-wrapper {
+  height: 360px;
+  // width: 670px;
+  width: 100%;
+  box-shadow: 0 4px 12px 0 @orange-secondary;
+  border: 1px solid @grey-border;
+  border-radius: 14px;
+  background: #fff;
+  padding: 40px;
+  .left-wrapper {
+    display: inline-block;
+    height: 100%;
+    width: 72%;
+    .row {
+      line-height: 40px;
+      .icon {
+        display: inline-block;
+        vertical-align: middle;
+        height: 32px;
+        width: 32px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+        margin-right: 13px;
+        &.weight {
+          background-image: url('./images/icon-weight.png');
+        }
+        &.desc {
+          background-image: url('./images/icon-desc.png');
+        }
+        &.likes {
+          background-image: url('./images/icon-likes.png');
+        }
+      }
+      .text {
+        display: inline-block;
+        font-size: 22px;
+        color: @font-color-light;
+      }
+    }
+    .row-name {
+      font-size: 42px;
+      line-height: 42px;
+      color: @font-color-dark;
+    }
+    .row-age {
+      margin-bottom: 75px;
+      .gender {
+        position: relative;
+        display: inline-block;
+        line-height: 26px;
+        padding-left: 42px;
+        padding-right: 14px;
+        border-radius: 13px;
+        margin-right: 10px;
+        font-size: 20px;
+        color: #fff;
+        &.male {
+          background: #86b0ed;
+          &:after {
+            position: absolute;
+            content: '';
+            left: 14px;
+            top: 4px;
+            height: 18px;
+            width: 14px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-image: url('./images/icon-male.png');
+          }
+        }
+        &.female {
+          background: #ff889a;
+          &:after {
+            position: absolute;
+            content: '';
+            left: 14px;
+            top: 4px;
+            height: 18px;
+            width: 14px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-image: url('./images/icon-female.png');
+          }
+        }
+      }
+    }
+  }
+
+  .right-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 27.1%;
+    height: 100%;
+    .avatar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 160px;
+      width: 160px;
+      border-radius: 80px;
+      border: 1px solid @grey-border;
+    }
+    .id {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      color: @orange-primary;
+      font-size: 20px;
+    }
+  }
+}

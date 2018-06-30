@@ -13,7 +13,7 @@ class Root extends Component {
         <React.Fragment>
           <Route exact path="/" component={Home} />
           <Route path="/create" component={Create} />
-          <Route path="/detail" component={Detail} />
+          <Route path="/detail/:id" component={Detail} />
           <Route path="/square" component={Square} />
         </React.Fragment>
       </Router>
