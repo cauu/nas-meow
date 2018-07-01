@@ -12,7 +12,18 @@ function addPreZero(num){
    return ('00000'+num).slice(-6);
 }
 
+function isMyPet(id) {
+  let myPetIds = [];
+
+  if(localStorage.getItem('myCats')) {
+    myPetIds = JSON.parse(localStorage.getItem('myCats'));
+  }
+
+  return myPetIds.map((id) => id * 1).indexOf(id * 1) !== -1;
+}
+
 export {
   isPC,
-  addPreZero
+  addPreZero,
+  isMyPet
 };

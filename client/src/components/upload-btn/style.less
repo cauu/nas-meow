@@ -1,0 +1,36 @@
+@import '../../styles/variables.less';
+
+.upload-btn {
+  position: fixed;
+  text-align: center;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 110px;
+  width: 110px;
+  line-height: 110px;
+  border-radius: 55px;
+  background: @orange-secondary;
+  box-shadow: 0 2px 12px @orange-secondary;
+
+  .am-image-picker-list .am-flexbox .am-flexbox-item {
+    .am-image-picker-upload-btn {
+      background-color: @orange-secondary;
+      border: 0;
+      &:after {
+        background-color: #fff;
+      }
+      &:before {
+        background-color: #fff;
+      }
+    }
+    &:first-child {
+      margin: 0;
+      background: @orange-secondary;
+      color: #fff;
+    }
+    &:not(:first-child) {
+      display: none;
+    }
+  }
+}

@@ -31,8 +31,8 @@ function likePet(id, onStartHook) {
   return nebPost('likePet', [id], 0, onStartHook);
 }
 
-function uploadPhotos(id, photos) {
-  return nebPost('uploadPhotos', [id, photos]);
+function uploadPhotos(id, photos, onStartHook) {
+  return nebPost('uploadPhotos', [id, photos], 0, onStartHook);
 }
 
 export {                                                                                                                                                                                                                                                                                                                                                                
