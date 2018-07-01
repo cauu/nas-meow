@@ -5,8 +5,9 @@ import { createPet, listPets, getPetById, likePet, uploadPhotos } from '../servi
 export default class MeowStore {
   @observable myPets = [];
   @observable petList = [];
-  @observable currPet = {};
+  @observable petDetail = {};
   @observable isLoading = false;
+  @observable isLiking = false;
 
   @action createPet = async () => {
     this.isLoading = true;
@@ -21,10 +22,15 @@ export default class MeowStore {
 
     const pets = await listPets();
 
-    this.isLoading = false;
-
     runInAction('update petList', () => {
-      this.petList.replace(pets);
+      let myPetIds = [];
+
+      if(localStorage.getItem('myCats')){
+        myPetIds = JSON.parse(localStorage.getItem('myCats'));
+      }
+
+      this.petList.replace(pets.filter((pet) => myPetIds.indexOf(pet.id + '') === -1));
+      this.isLoading = false;
     });
   }
 
@@ -41,13 +47,31 @@ export default class MeowStore {
 
     runInAction('update mypets', () => {
       this.myPets = myPets;
-      this.loading = false;
+      this.isLoading = false;
     });
   }
 
   @action getPetDetail = async (id) => {
     this.isLoading = true;
 
-    const pet = await getPetById('');
+    this.petDetail = {};
+
+    const pet = await getPetById(id);
+
+    runInAction('update petDetail', () => {
+      this.petDetail = pet;
+      this.isLoading = false;
+    });
+  }
+
+  @action likePet = async (id) => {
+    await likePet(id, () => runInAction(() => {
+      this.isLiking  = true;
+    }));
+
+    runInAction('update petDetail', () => {
+      this.petDetail.likes += 1;
+      this.isLiking = false;
+    })
   }
 }

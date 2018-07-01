@@ -1,37 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { observer, inject } from 'mobx-react';
+import { ActivityIndicator } from 'antd-mobile';
 
 import SimpleCard from '../../components/simple-card';
 
 import './style.less';
 import { debug } from 'util';
 
-const debugData = [
-  {
-    id: 0,
-    name: '安娜娜',
-    gender: 'f',
-    birthday: '2017-01-15',
-    isSterilized: 'true',
-    weight: 5,
-    likes: 1000,
-    desc: '鼻子上长了痘痘的小喵咪',
-  },
-  {
-    id: 1,
-    name: '安娜娜',
-    gender: 'f',
-    birthday: '2017-01-15',
-    isSterilized: 'true',
-    weight: 5,
-    likes: 1000,
-    desc: '鼻子上长了痘痘的小喵咪',
-  }
-];
-
+@inject('meowStore')
+@observer
 class Square extends Component {
   constructor(props) {
     super(props);
+
+    props.meowStore.getAllPets();
   }
 
   onCardClick = ({id}) => {
@@ -41,10 +24,13 @@ class Square extends Component {
   }
 
   render() {
-    const cards = debugData;
+    const { meowStore } = this.props;
+    const cards = meowStore.petList;
 
     return (
       <div className="square-wrapper">
+        <ActivityIndicator animating={meowStore.isLoading} toast text="正在加载" />
+
         <div className="row-header">
           <Link to="/">
             我的猫卡
@@ -56,7 +42,7 @@ class Square extends Component {
         </div>
 
         {
-          cards.map((card) => {
+          (cards || []).map((card) => {
             return (
               <div className="item-wrapper">
                 <SimpleCard {...card} onClick={this.onCardClick} />

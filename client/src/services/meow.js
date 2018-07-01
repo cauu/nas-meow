@@ -20,15 +20,15 @@ function createPet(
 }
 
 function listPets() {
-  return nebGet('listPets');
+  return nebGet('listPets', []);
 }
 
 function getPetById(id) {
   return nebGet('getPetById', [id]);
 }
 
-function likePet(id) {
-  return nebGet('likePet', [id]);
+function likePet(id, onStartHook) {
+  return nebPost('likePet', [id], 0, onStartHook);
 }
 
 function uploadPhotos(id, photos) {

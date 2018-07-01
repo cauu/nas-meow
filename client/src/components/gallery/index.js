@@ -10,11 +10,11 @@ export default class Gallery extends PureComponent {
   };
 
   render() {
-    const { photos } = this.props;
+    const { photos, name } = this.props;
     const { expanded } = this.state; 
 
     return (
-      <div className="gallery-wrapper">
+      <div className={classnames('gallery-wrapper', {empty: photos.length === 0})}>
         {
           _(photos)
             .filter((photo) => photo !== '')
@@ -39,6 +39,14 @@ export default class Gallery extends PureComponent {
                 {expanded && '收起' || '展开'}
               </span>
               <div className={classnames("btn-expand", {expanded: expanded})}/>
+            </div>
+        }
+        {
+          photos.length === 0 &&
+            <div className="row-empty">
+              {`${name}的铲屎官很懒`}
+              <br />
+              还没留下任何照片
             </div>
         }
       </div>

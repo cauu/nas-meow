@@ -3,6 +3,9 @@
 .gallery-wrapper {
   background: #fff;
   padding: 0 40px;
+  &.empty {
+    background: @orange-primary;
+  }
   .row {
     display: flex;
     justify-content: space-around;
@@ -39,5 +42,16 @@
         background-image: url('./icon-unexpand.png');
       }
     }
+  }
+
+  .row-empty {
+    width: 670px;
+    margin: 0 auto;
+    padding: 40px;
+    font-size: 24px;
+    color: @font-color-middle;
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 4px 12px 0 @orange-secondary;
   }
 }

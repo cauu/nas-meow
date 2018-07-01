@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
+
+import { addPreZero } from '../../utils';
 
 import './style.less';
 
@@ -8,7 +11,7 @@ export default class Card extends PureComponent {
     const {
       id,
       name,
-      isSterilized,
+      isSterilization,
       gender,
       age,
       birthday,
@@ -24,42 +27,42 @@ export default class Card extends PureComponent {
         <div className="left-wrapper">
           <div className="row-name">{name}</div>
           <div className="row row-age">
-            <div className="gender male">
-              {gender}
+            <div className={classnames('gender', {male: gender === 'm'}, {female: gender === 'f'})}>
+              {isSterilization && '已绝育' || '未绝育'}
             </div>
             <div className="text">
-              {birthday}
+              {`出生于${birthday}`}
             </div>
           </div>
 
           <div className="row row-weight">
             <div className="icon weight" />
             <span className="text">
-              {weight}
+              {`体重 ${weight} kg`}
             </span>
           </div>
 
           <div className="row row-desc">
             <div className="icon desc" />
             <span className="text">
-              {weight}
+              {desc}
             </span>
           </div>
 
           <div className="row row-likes">
             <div className="icon likes" />
             <span className="text">
-              {weight}
+              {`点赞数 ${likes}`}
             </span>
           </div>
         </div>
 
         <div className="right-wrapper">
-          <div className="avatar">
+          <div className="avatar" style={{backgroundImage: `url(${avatar})`}}>
           </div>
 
           <div className="id">
-            {`喵卡号: 123`}
+            {`喵卡号: ${addPreZero(id)}`}
           </div>
         </div>
       </div>

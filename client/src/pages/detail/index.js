@@ -1,45 +1,53 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { observer, inject } from 'mobx-react';
+import { ActivityIndicator, Progress, Toast } from 'antd-mobile';
 
 import MeowCard from '../../components/card';
 import Gallery from '../../components/gallery';
 
 import './style.less';
 
-const debugData = [
-  {
-    name: '安娜娜',
-    gender: 'f',
-    birthday: '2017-01-15',
-    isSterilized: 'true',
-    weight: 5,
-    likes: 1000,
-    desc: '鼻子上长了痘痘的小喵咪',
-    photos: `
-      http://paga738og.bkt.clouddn.com/2578032-7892f70d952438fb.jpg,
-      http://paga738og.bkt.clouddn.com/2578032-7892f70d952438fb.jpg,
-      http://paga738og.bkt.clouddn.com/2578032-7892f70d952438fb.jpg,
-      http://paga738og.bkt.clouddn.com/2578032-7892f70d952438fb.jpg,
-      http://paga738og.bkt.clouddn.com/2578032-7892f70d952438fb.jpg,
-      http://paga738og.bkt.clouddn.com/2578032-7892f70d952438fb.jpg,
-      http://paga738og.bkt.clouddn.com/2578032-7892f70d952438fb.jpg,
-      http://paga738og.bkt.clouddn.com/2578032-7892f70d952438fb.jpg,
-      http://paga738og.bkt.clouddn.com/2578032-7892f70d952438fb.jpg
-    `
-  }
-];
-
+@inject('meowStore')
+@observer
 class Detail extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isLiking: false
+    };
+
+    const { id } = props.match.params;
+
+    props.meowStore.getPetDetail(id);
+  }
+
+  onLikeClick = async (id) => {
+    await this.props.meowStore.likePet(id);
+
+    Toast.success('点赞成功', 2);
   }
 
   render() {
-    const card = debugData[0];
+    const { meowStore } = this.props;
+    const card = meowStore.petDetail;
     const photos = card.photos && card.photos.split(',') || [];
 
     return (
       <div className="detail-wrapper">
+        <ActivityIndicator
+          animating={meowStore.isLiking}
+          toast
+          text="正在点赞"
+        />
+
+        <ActivityIndicator
+          animating={meowStore.isLoading}
+          toast
+          text="正在加载"
+        />
+
         <div className="content-wrapper">
           <Link to="/">
             <div className="row-header">
@@ -53,10 +61,15 @@ class Detail extends Component {
           <MeowCard {...card} />
 
           <div className="row-like">
+            <div className="text">
+              {`为我点赞 ${card.likes}`}
+            </div>
+            <Progress percent={(card.likes / 50)} position="normal" />
+            <div onClick={() => this.onLikeClick(card.id)} className="btn-like" />
           </div>
         </div>
 
-        <Gallery photos={photos} />
+        <Gallery {...card} photos={photos} />
       </div>
     );
   }

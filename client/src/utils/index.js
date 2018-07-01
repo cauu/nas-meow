@@ -8,6 +8,11 @@ function isPC () {
 	return flag;
 }
 
+function addPreZero(num){
+   return ('00000'+num).slice(-6);
+}
+
 export {
-  isPC
+  isPC,
+  addPreZero
 };

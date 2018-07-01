@@ -1,25 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
+import { ActivityIndicator } from 'antd-mobile';
 
 import MeowCard from '../../components/card';
 import AddCard from '../../components/add-card';
 
 import './style.less';
-
-const debugData = [
-  {
-    id: 0,
-    name: '安娜娜',
-    gender: 'f',
-    birthday: '2017-01-15',
-    isSterilized: 'true',
-    weight: 5,
-    likes: 1000,
-    desc: '鼻子上长了痘痘的小喵咪',
-  }
-];
-
 
 @inject('meowStore')
 @observer
@@ -43,6 +30,8 @@ class Home extends Component {
 
     return (
       <div className="home-wrapper">
+        <ActivityIndicator animating={meowStore.isLoading} toast text="正在加载" />
+
         <div className="row-header">
           <span className="active">
             我的猫卡
@@ -55,7 +44,9 @@ class Home extends Component {
         <div className="card-wrapper">
           {
             cardsInfo.map((card) => (
-              <MeowCard onClick={this.onCardClick} {...card} />
+              <div className="item">
+                <MeowCard onClick={this.onCardClick} {...card} />
+              </div>
             ))
           }
         </div>
