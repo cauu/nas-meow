@@ -1,17 +1,18 @@
 @import '../../styles/variables.less';
 
 .meow-card-wrapper {
-  height: 360px;
+  min-height: 360px;
   // width: 670px;
   width: 100%;
   box-shadow: 0 4px 12px 0 @orange-secondary;
   border-radius: 14px;
-  background: #fff;
+  background: #ffffff;
   padding: 40px;
+  display: flex;
+  align-items: stretch;
   .left-wrapper {
-    display: inline-block;
-    height: 100%;
-    width: 72%;
+    flex-basis: 72%;
+    vertical-align: top;
     .row {
       line-height: 40px;
       .icon {
@@ -35,6 +36,8 @@
       }
       .text {
         display: inline-block;
+        vertical-align: middle;
+        width: 85%;
         font-size: 22px;
         color: @font-color-light;
       }
@@ -91,10 +94,12 @@
   }
 
   .right-wrapper {
+    display: flex;
     position: relative;
-    display: inline-block;
-    width: 27.1%;
-    height: 100%;
+    flex-basis: 27%;
+    vertical-align: top;
+    flex-direction: column;
+    justify-content: flex-start;
     .avatar {
       position: absolute;
       top: 0;
